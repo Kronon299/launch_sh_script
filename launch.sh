@@ -1,13 +1,15 @@
 #!/bin/bash
 
 echo "*****cleaning directory*****"
-rm -ir *
+rm -r $(ls | grep -v launch.sh)
 
 REPO="$@"
 
 echo "*****cloning repo*****"
 git clone $REPO
-repodir=$(ls | grep -v launch.sh) ; cd $repodir
+cd $(ls | grep -v launch.sh)
+echo $(pwd)
+#repodir=$(ls | grep -v launch.sh) ; cd $repodir
 
 echo "*****install pip*****"
 sudo apt install python3-pip
@@ -25,5 +27,5 @@ venv/bin/pip install -r requirements.txt
 echo "*****runing flask app*****"
 export FLASK_APP=app.py
 flask run
-
+#python3 main.py
 
