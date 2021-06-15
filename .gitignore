@@ -1,2 +1,5 @@
-/playground/
-*.swp
+**/playground/
+**.swp
+.idea
+/venv/
+**.pyc
