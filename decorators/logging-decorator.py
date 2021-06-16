@@ -1,12 +1,13 @@
 import functools
+import random
 import time
 
 
 def logging_decorator(func):
     stat_data = {
         'calls_count': 0,
-        'total_time': 0,
-        'avg_time': 0,
+        'total_time': 0.0,
+        'avg_time': 0.0,
     }
 
     @functools.wraps(func)
@@ -19,8 +20,8 @@ def logging_decorator(func):
         stat_data['avg_time'] = stat_data['total_time'] / stat_data['calls_count']
 
         print(f'Function <{wrapper.__name__}> was called {stat_data["calls_count"]} times.'
-              f' Total spent time in this function {stat_data["total_time"]} seconds,'
-              f' {stat_data["avg_time"]} seconds in average')
+              f' Total spent time in this function {stat_data["total_time"]:.2f} seconds,'
+              f' {stat_data["avg_time"]:.2f} seconds in average')
         return result
 
     return wrapper
@@ -28,7 +29,7 @@ def logging_decorator(func):
 
 @logging_decorator
 def sleeper():
-    time.sleep(1)
+    time.sleep(random.randint(1, 3))
 
 
 if __name__ == '__main__':
