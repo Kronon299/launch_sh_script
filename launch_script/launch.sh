@@ -3,12 +3,12 @@
 echo "*****cleaning directory*****"
 rm -r $(ls | grep -v launch.sh)
 
-REPO="$@"
+REPO=$1
 
 echo "*****cloning repo*****"
 git clone $REPO
 cd $(ls | grep -v launch.sh)
-echo $(pwd)
+pwd
 #repodir=$(ls | grep -v launch.sh) ; cd $repodir
 
 echo "*****install pip*****"
