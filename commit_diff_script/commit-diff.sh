@@ -1,8 +1,9 @@
 #!/bin/bash
 
-#echo "$(git diff HEAD^ --numstat)" | awk '/[1-9]/'
-#echo "123" | awk '/[0-9][0-9][0-9]/'
-git diff HEAD^ --numstat |
-while IFS=" " read -r distro; do
-  printf 'difference: %s\n' "$distro"
+git diff HEAD~3..HEAD --numstat |
+while read -r line; do
+  name=$(echo $line | awk '{print $3}')
+  added=$(echo $line | awk '{print $1}')
+  removed=$(echo $line | awk '{print $2}')
+  printf '%s: %s lines added, %s lines removed.\n' "$name" "$added" "$removed"
 done
