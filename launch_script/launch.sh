@@ -27,5 +27,7 @@ venv/bin/pip install -r requirements.txt
 echo "*****runing flask app*****"
 export FLASK_APP=app.py
 flask run
+#
+#
 #python3 main.py
 
