@@ -1,4 +1,4 @@
-# launch.sh - script for setting up Flask app
+# launch_script/launch.sh - script for setting up Flask app
 
 - Takes repo link as argument
 - Clean directory
