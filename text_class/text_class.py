@@ -1,6 +1,7 @@
-from decorators import color_print
+from decorators.color_print import color_print_method, color_print_class
 
 
+@color_print_class('blue')
 class Text:
     def __init__(self, path_to_file_with_text):
         self._path_to_file_with_text = path_to_file_with_text
@@ -26,7 +27,7 @@ class Text:
     def __iter__(self):
         return self
 
-    @color_print.color_print_method('magenta')
+    # @color_print_method('magenta')
     def __next__(self):
         if not self.inited:
             self.read_words()
@@ -57,7 +58,7 @@ class LazyText(Text):
                     else:
                         continue
 
-    @color_print.color_print_method('BLUE')
+    @color_print_method('BLUE')
     def __next__(self):
         try:
             result = next(self.get_word())

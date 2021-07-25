@@ -39,3 +39,10 @@ def color_print_method(color):
             return f'{arg}{result}{Style.RESET_ALL}'
         return wrapper
     return decorator
+
+
+def color_print_class(color):
+    def decorator(cls):
+        cls.__next__ = color_print_method(color)(cls.__next__)
+        return cls
+    return decorator
