@@ -14,6 +14,14 @@ def gen_fibonacci_num():
             yield num_2
 
 
+def gen_fibonacci_num_2():
+    yield 1
+    yield 1
+    num_1, num_2 = 1, 1
+    while True:
+        num_1, num_2 = num_2, num_1 + num_2
+        yield num_2
+
 if __name__ == '__main__':
     fibo_gen = gen_fibonacci_num()
     print(next(fibo_gen))
