@@ -16,8 +16,9 @@ def color_print_method(color):
                            'CYAN': Fore.CYAN,
                            'WHITE': Fore.WHITE,
                            }
-            if color.upper() in color_codes:
-                arg = color_codes[color.upper()]
+            arg = color_codes.get(color.upper(), Fore.RESET)
+            # if color.upper() in color_codes:
+            #     arg = color_codes[color.upper()]
             # elif color.upper() == 'BLACK':
             #     arg = Fore.BLACK
             # elif color.upper() == 'RED':
@@ -34,8 +35,8 @@ def color_print_method(color):
             #     arg = Fore.CYAN
             # elif color.upper() == 'WHITE':
             #     arg = Fore.WHITE
-            else:
-                arg = Fore.RESET
+            # else:
+            #     arg = Fore.RESET
             return f'{arg}{result}{Style.RESET_ALL}'
         return wrapper
     return decorator
