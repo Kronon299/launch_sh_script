@@ -1,35 +1,4 @@
-from dataclasses import dataclass
-
-
-class Task:
-    def __init__(self, name: str, description: str):
-        self._name = name
-        self._description = description
-        self.__state = "New"
-
-    def __str__(self):
-        return f"Task name: {self._name}\nTask description: {self._description}"
-
-    def __repr__(self):
-        return str(self)
-
-    def progress(self):
-        if self.__state == "New":
-            self.__state = "In Progress"
-            print('Task state was set to "In Progress"')
-        elif self.__state == "In Progress":
-            print('Task state was set to "Done"')
-            self.__state = "Done"
-        else:
-            print('Task state is already "Done"')
-
-    def get_state(self):
-        return self.__state
-
-
-@dataclass
-class User:
-    name: str
+from models import User, Task, Session, Base
 
 
 class MainTaskHandler:
@@ -37,28 +6,37 @@ class MainTaskHandler:
         self.active_user = None
         self.active_task = None
         self.command = None
-        self.data = {}
+        self.session = Session()  # Is it ok?
+        Base.metadata.create_all()
 
     def ask_for_command(self):
         self.command = str(input('please, input a command: '))
         return self.command
 
     def create_user(self, name: str):
-        self.active_user = User(name)
-        self.data[self.active_user.name] = []
+        self.active_user = User(username=name)
+        self.session.add(self.active_user)
+        self.session.commit()
+        print(f'User created: {self.active_user}')
+        return self.active_user
 
-    def create_task(self, user: str, task_name: str, task_description: str):
-        self.active_task = Task(name=task_name, description=task_description)
-        if user in self.data:
-            self.data[user].append(self.active_task)
-        else:
-            self.create_user(user)
-            self.create_task(user=user, task_name=task_name, task_description=task_description)
+    def create_task(self, task_name: str, task_description: str):
+        if not self.active_user:
+            pass
+        self.active_task = Task(title=task_name, description=task_description, user_id=self.active_user.id)
+        self.session.add(self.active_task)
+        self.session.commit()
+        print(f'Task created: {self.active_task}')
+        return self.active_task
+
+    def check_active_user(self):
+        return self.active_user
 
 
 if __name__ == '__main__':
     handler = MainTaskHandler()
-    while True:
-        command = handler.ask_for_command()
-        if command.lower() == 'exit':
-            break
+    handler.create_user(name='matt')
+    # while True:
+    #     command = handler.ask_for_command()
+    #     if command.lower() == 'exit':
+    #         break
