@@ -30,20 +30,20 @@ class Task(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String(128), nullable=False)
     description = Column(String(256), nullable=True)
+    state = Column(String(256), nullable=False, default='new')
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
 
     user = relationship(User, back_populates="tasks")
 
     def __str__(self):
-        return f"{self.__class__.__name__}(id={self.id}, title={self.title!r}, user={self.author})"
+        return f"{self.__class__.__name__}(id={self.id}, title={self.title!r}, user={self.user_id}, state={self.state})"
 
     def __repr__(self):
         return str(self)
 
 
-def create_user(session, username: str) -> User:
+def create_user(username: str) -> User:
     """
-    :param session:
     :param username:
     :return:
     """
@@ -60,6 +60,6 @@ if __name__ == '__main__':
     Base.metadata.create_all()
     session = Session()
     try:
-        u = create_user(session, "sam")
+        u = create_user("sam")
     except IntegrityError:
         print('this user name already exists')
