@@ -1,0 +1,58 @@
+************************************************************************
+
+1) найти имена авторов, не написавших ни одной книги
+
+SELECT authors.name
+FROM authors
+LEFT JOIN books ON books.author_id=authors.id
+GROUP BY authors.name
+HAVING count(books.author_id)=0
+
+# optimised:
+SELECT authors.name
+FROM authors
+LEFT JOIN books ON books.author_id=authors.id
+WHERE books.author_id IS NULL
+
+************************************************************************
+
+2) найти имена авторов, написавших 3 книги,
+
+SELECT name
+FROM authors
+WHERE EXISTS(
+	SELECT books.author_id, count(books.author_id)
+	FROM books
+	GROUP BY books.author_id
+	HAVING count(books.author_id)=3 AND books.author_id=authors.id)
+
+# optimised:
+SELECT authors.name
+FROM authors
+LEFT JOIN books ON books.author_id=authors.id
+GROUP BY authors.name
+HAVING count(books.author_id)=3
+************************************************************************
+
+3) найти имена авторов, которые или написали книгу, или младше 40 (старше 45):
+
+SELECT name
+FROM authors
+WHERE EXISTS(
+	SELECT title
+	FROM books
+	WHERE books.author_id=authors.id OR age>45)
+
+# optimised:
+SELECT  DISTINCT authors.name
+FROM authors
+LEFT JOIN books ON books.author_id=authors.id
+WHERE books.author_id IS NOT NULL OR authors.age > 45
+************************************************************************
+
+4) количество книг, написанных каждым автором:
+
+SELECT authors.name, count(books.author_id) as number_of_books
+FROM authors
+LEFT JOIN books ON books.author_id=authors.id
+GROUP BY authors.name
