@@ -3,7 +3,7 @@ from queue import Queue
 
 ##########################################################################################
 # Fuzzing is a technique for amplifying race condition errors to make them more visible
-q = Queue()
+
 FUZZ = True
 
 
@@ -13,16 +13,16 @@ def fuzz():
 
 
 ###########################################################################################
-
+q = Queue(1)
 counter = 0
+q.put(counter)
 
 
-def worker():
+def worker(qu):
     'My job is to increment the counter and print the current count'
     global counter
-
+    oldcnt = qu.get()
     fuzz()
-    oldcnt = counter
     fuzz()
     counter = oldcnt + 1
     fuzz()
@@ -34,16 +34,16 @@ def worker():
     fuzz()
     print()
     fuzz()
-    q.get(i)
+    qu.put(counter)
+    qu.task_done()
 
 
 print('Starting up')
 fuzz()
 for i in range(10):
-    q.put(i)
-    threading.Thread(target=worker).start()
+    threading.Thread(target=worker, args=(q,)).start()
     fuzz()
-while not q.empty():
-    time.sleep(1)
+q.get()
+# q.join()
 print('Finishing up')
 fuzz()
