@@ -1,4 +1,4 @@
-from models import User, Task, Session, Base
+from models.models import User, Task, Session, Base
 from sqlalchemy.orm.exc import NoResultFound
 
 
@@ -6,7 +6,7 @@ class MainTaskHandler:
     def __init__(self):
         self.active_user = None
         self.active_task = None
-        self.session = Session()  # Is it ok?
+        self.session = Session()
         Base.metadata.create_all()
 
     def ask_for_command(self):
@@ -16,15 +16,20 @@ class MainTaskHandler:
 
     def create_user(self, name: str):
         """
-        Create new user
+        Create a new user
         :param name: User name
         :return: active user
         """
-        self.active_user = User(username=name)
+        self.active_user = User(name=name)
         self.session.add(self.active_user)
         self.session.commit()
         print(f'User created: {self.active_user}')
         return self.active_user
+
+    def get_users(self):
+        # self.active_user_init()
+        users = self.session.query(User).all()
+        return users
 
     def active_user_init(self):
         if self.active_user:

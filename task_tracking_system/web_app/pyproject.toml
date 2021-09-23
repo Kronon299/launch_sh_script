@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "task-list"
+version = "0.1.0"
+description = ""
+authors = ["Stas_Klimovich <stasklimovich299@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Flask = "^1.1.2"
+Flask-SQLAlchemy = "^2.4.4"
+Flask-Migrate = "^2.5.3"
+psycopg2 = "^2.8.6"
+wtforms = "^2.3.3"
+flask-wtf = "^0.14.3"
+flask-bootstrap = "^3.3.7.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

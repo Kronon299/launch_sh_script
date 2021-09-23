@@ -1,3 +1,5 @@
+from .database import db
+
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
@@ -18,6 +20,9 @@ class User(Base):
 
     tasks = relationship("Task", back_populates="user")
 
+    def __init__(self, name):
+        self.name = name
+
     def __str__(self):
         return f"{self.__class__.__name__}(id={self.id}, username={self.username!r})"
 
@@ -35,6 +40,9 @@ class Task(Base):
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
 
     user = relationship(User, back_populates="tasks")
+
+    def __init__(self, name):
+        self.name = name
 
     def __str__(self):
         return f"{self.__class__.__name__}(id={self.id}, title={self.title!r}, user={self.user_id}, state={self.state})"
